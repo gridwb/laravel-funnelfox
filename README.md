@@ -25,13 +25,29 @@ Laravel FunnelFox is a convenient wrapper for interacting with the FunnelFox API
 
 3. Add environment variables
     ```env
-   TEST=test
+    FUNNELFOX_WEBHOOK_PATH=webhooks/funnelfox
+    FUNNELFOX_WEBHOOK_SECRET=your-webhook-secret-here
     ```
 
 ## Usage
 
 ### `Webhooks`
-Test
+
+FunnelFox can send events to your Laravel application via webhooks. By default, all webhook requests are dispatched to the
+`Gridwb\LaravelFunnelFox\Jobs\ProcessWebhook::class` job, which triggers corresponding Laravel events. You can listen to
+these events like any other Laravel event:
+
+```php
+<?php
+
+use Gridwb\LaravelFunnelFox\Events\OnboardingStarted;
+use Illuminate\Support\Facades\Event;
+
+Event::listen(OnboardingStarted::class, function (OnboardingStarted $event) {
+    $payload = $event->payload;
+    // Access data from FunnelFox payload
+});
+```
 
 ## Testing
 

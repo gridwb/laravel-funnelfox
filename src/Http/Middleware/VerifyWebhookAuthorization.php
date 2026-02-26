@@ -21,6 +21,7 @@ readonly class VerifyWebhookAuthorization
 
     private function verify(Request $request): void
     {
+        /** @var string|null $token */
         $token = $request->header('Fox-Secret-Key');
 
         if (empty($token)) {

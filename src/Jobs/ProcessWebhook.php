@@ -29,8 +29,11 @@ class ProcessWebhook implements ShouldQueue
         /** @var string|null $eventType */
         $eventType = Arr::get($this->payload, 'type');
 
+        /** @var array<string, class-string<AbstractEvent>> $events */
+        $events = Config::get('funnelfox.webhook.events', []);
+
         /** @var class-string<AbstractEvent>|null $event */
-        $event = Config::get("funnelfox.webhook.events.$eventType");
+        $event = $events[$eventType] ?? null;
 
         if ($event) {
             event(new $event($this->payload));
